@@ -6,12 +6,12 @@ import { makeGameBoard, renderHits, renderMisses, attackEventListener, clearBoar
 
 
 
-const playerOne = createPlayer()
-const playerTwo = createPlayer()
-const playerTest = createPlayer()
-const playerOneBoard = playerOne.board
-const playerTwoBoard = playerTwo.board
-const playerTestBoard = playerTest.board
+let playerOne = createPlayer()
+let playerTwo = createPlayer()
+
+let playerOneBoard = playerOne.board
+let playerTwoBoard = playerTwo.board
+
 
 
 
@@ -20,18 +20,21 @@ makeGameBoard("board2", "player2")
 playerOne.populateShotsAvailable()
 playerTwo.populateShotsAvailable()
 
-playerOneBoard.placeAllShips()
-playerTwoBoard.placeAllShips()
+// playerOneBoard.placeAllShips()
+// playerTwoBoard.placeAllShips()
 
-let compShipOne = playerTestBoard.placeComputerPatrolBoat(playerTestBoard.generateAllCoordinates())
-let compShipTwo = playerTestBoard.placeComputerSub(compShipOne)
-let compShipThree = playerTestBoard.placeComputerSub(compShipTwo)
-let compShipFour = playerTestBoard.placeComputerBattleship(compShipThree)
-let compShipFive = playerTestBoard.placeComputerCarrier(compShipFour)
+// let compShipOne = playerTestBoard.placeComputerPatrolBoat(playerTestBoard.generateAllCoordinates())
+// let compShipTwo = playerTestBoard.placeComputerSub(compShipOne)
+// let compShipThree = playerTestBoard.placeComputerSub(compShipTwo)
+// let compShipFour = playerTestBoard.placeComputerBattleship(compShipThree)
+// let compShipFive = playerTestBoard.placeComputerCarrier(compShipFour)
+
+playerOneBoard.placeAllComputerShips()
+playerTwoBoard.placeAllComputerShips()
+// console.log(playerOneBoard.ships)
 
 
 
-console.log(playerTestBoard.ships)
 
 let game = () => {
   newGamePlayer1()
@@ -40,6 +43,7 @@ let game = () => {
 
 let humanPlayerAttack = (coordinate) => {
   let attackP1 = playerOne.humanAttack(coordinate)
+  
   let receiveP2 = playerTwoBoard.receiveAttack(attackP1)
   let renderP1Hits = renderHits("player2", playerTwoBoard)
   let renderP1Misses = renderMisses("player2", playerTwoBoard)
@@ -79,35 +83,53 @@ export let progressGame = (item) => {
   computerPlayerAttack()
 }
 
-
-
-// let game = () => {
-//   let eitherSunk = () => {
-//     if (playerTwoBoard.checkSunk("Player 1") == true ||playerOneBoard.checkSunk("Player 2") == true) {
-//       return true
-//     } else {
-//       return false
-//     }
-//   }
-//   newGamePlayer1()
-//   while (eitherSunk == false) {
-//     eitherSunk()
-//     progressGame()
-
-//   }
+let compVsComp = () => {
+  for (let i = 0; i < 100; i++){
+    let attackP1 = playerOne.computerAttack()
   
-// }
+    let receiveP2 = playerTwoBoard.receiveAttack(attackP1)
+    let renderP1Hits = renderHits("player2", playerTwoBoard)
+    let renderP1Misses = renderMisses("player2", playerTwoBoard)
+    let sunkP2 = playerTwoBoard.checkSunk("Player 1")
+      if (sunkP2 == true) {
+        
+      return
+    }
+  
+  let attackP2 = playerTwo.computerAttack()
+  
+  let receiveP1 = playerOneBoard.receiveAttack(attackP2)
+  let renderP2Hits = renderHits("player1", playerOneBoard)
+  let renderP2Misses = renderMisses("player1", playerOneBoard)
+  let sunkP1 = playerOneBoard.checkSunk("Player 2")
+    if (sunkP1 == true) {
+      
+    return
+  }
+  }
+}
 
-// let newGamePlayer2 = () => {
-//   let gridItems = document.querySelectorAll('.board1 > *')
+export let newGame = () => {
+  let btn = document.querySelector('.btn-newgame')
 
-//   gridItems.forEach(item => { 
-//     item.addEventListener('click', gamePlayer2, {once: true})
-//   })
+  btn.addEventListener('click', () => {
+    clearBoard()
+    playerOne = createPlayer()
+    playerTwo = createPlayer()
+    playerOneBoard = playerOne.board
+    playerTwoBoard = playerTwo.board
+    playerOne.populateShotsAvailable()
+    playerTwo.populateShotsAvailable()
 
-// }
+    playerOneBoard.placeAllComputerShips()
+    playerTwoBoard.placeAllComputerShips()
+    
+    compVsComp()
+  })
+}
 
-game()
+// compVsComp()
+
 
 //Computer picking coordinates
 // Math.floor((Math.random() * 10) + 1);

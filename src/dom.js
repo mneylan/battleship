@@ -30,10 +30,11 @@ export let renderHits = (player, obj) => {
 
 export let renderMisses = (player, obj) => {
   let arr = obj.missedShots
-
+    
     arr.forEach(miss => {
+      
       let ele = document.querySelector(`[data-${player}-${miss[0]}-${miss[1]}]`)
-
+      
       ele.style.backgroundColor = "white"
     })
 }
@@ -49,12 +50,16 @@ export let attackEventListener = (player, obj) => {
 export let clearBoard = () => {
   let board2 = document.querySelectorAll('.board2 > *')
   let board1 = document.querySelectorAll('.board1 > *')
+  let winner = document.querySelector('.winner')
+  let newGameBtn = document.querySelector('.btn-newgame')
   board2.forEach(item => {
     item.style.backgroundColor = "lightgrey"
   })
   board1.forEach(item => {
     item.style.backgroundColor = "lightgrey"
   })
+  winner.remove()
+  newGameBtn.remove()
 }
 
 export let showWinner = (otherPlayer) => {
@@ -74,5 +79,8 @@ export let removeGameListener = () => {
 
 export let newGameButton = () => {
   let body = document.body
-  let btn = document.createElement(btn)
+  let btn = document.createElement('btn')
+  btn.classList = "btn-newgame"
+  btn.textContent = "New Game"
+  body.appendChild(btn)
 }
