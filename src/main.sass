@@ -4,6 +4,8 @@
   border: 0
   box-sizing: border-box
 
+body
+  padding: 20px
 
 strong 
   font-weight: bold
@@ -12,3 +14,29 @@ strong
 h1 
   font-size: 30px
   color: salmon
+
+.board-container
+  display: flex
+  height: 650px
+  
+  justify-content: center
+  gap: 10px
+  
+  
+
+
+.board1, .board2
+  display: grid
+  grid-template-columns: repeat(10, 1fr)
+  grid-template-rows: repeat(10, 1fr)
+  
+  flex-basis: 50%
+    
+.board1 > *, .board2 > *
+  border: solid 1px black
+  background-color: lightgrey
+
+.winner 
+  font-size: 30px
+  font-weight: 600
+  
